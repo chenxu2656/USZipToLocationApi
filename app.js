@@ -7,20 +7,15 @@ var server = app.listen(3001,()=>{
     let port = server.address().port
     console.log("应用实例，访问地址为 http://localhost:3001")
 })
-let fn = function(onject,id) {
-    return onject.filter(o => o.fields.zip === id)[0].fields.geopoint; // id一定有对应值的情况
+let searchFromJson = (object,id) => {
+    return object.filter(o => o.fields.zip === id)[0].fields.geopoint; 
   }
 
-app.get('/:id',(req,res)=>{
+app.get('/zipCode/Data',(req,res)=>{
     fs.readFile( __dirname + "/" + "data.json", 'utf8', function (err, data) {
+        console.log('test');
         data = JSON.parse( data );
-        console.log(req.params.id);
-        console.log(data.length);
-        // data.forEach()
-        let result = fn(data,req.params.id)
-        console.log(result);
-
-        // dir()
+        let result = searchFromJson(data,req.query.id)
         res.end( JSON.stringify(result));
     });
 })
